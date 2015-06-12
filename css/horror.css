@@ -1,0 +1,31 @@
+html {
+    background-color: white;
+}
+
+
+.horror {
+    width: 1280px;
+    height: 720px;
+    background-color: gray;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.horror > ul {
+    padding: 0;
+    margin: 0 auto;
+    text-align: center;
+    display: inline;
+}
+.horror > ul > li {
+    display: inline-block;
+}
+
+.poster{
+    width: 352px;
+}
+
+.active {
+    border: 10px solid green;
+    
+}

@@ -1,0 +1,49 @@
+html {
+    background-color: white;
+}
+
+
+.wrapper {
+    width: 1280px;
+    height: 720px;
+    background-color: gray;
+    margin: 0 auto;
+    text-align: center;
+}
+nav {
+    position: relative;
+    top: 310px;
+}
+
+nav > ul {
+    margin: 0 auto;
+    text-align: center;
+    padding: 0;
+ }
+
+nav > ul > li {
+    display: inline-block;
+
+}
+
+a:hover, a:visited, a:active, a:link {
+    text-decoration: none;
+}
+
+nav > ul > li > a {
+    text-decoration: none;
+    font-size: 3em;
+    background-color: #F7F1AD;
+    display: table-cell;
+    vertical-align: middle;
+    width: 200px;
+    height: 100px;
+        
+}
+
+
+
+.active {
+    border: 10px solid green;
+    
+}
