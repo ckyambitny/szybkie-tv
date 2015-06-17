@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="myApp">
 <head>
     <meta charset="UTF-8">
     <title>Simple tv APP</title>
@@ -7,18 +7,14 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
     <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
-    <div class="wrapper">
-        <nav>
-            <ul>
-                <li><a class="active" href="#">Akcja</a></li>
-                <li><a href="#">Horror</a></li>
-                <li><a href="#">Komedia</a></li>
-                <li><a href="#">Familijne</a></li>
-            </ul>
-        </nav> 
-    </div>
-    <script src="scripts/main.js"></script>
+<body key-trap>
+   <div ng-view=""></div>
+                    
+
+    <script src="node_modules/angular/angular.js"></script>
+    <script src="node_modules/angular-route/angular-route.js"></script>
+    <script src="scripts/menuController.js"></script>
+    <script src="scripts/app.rout.js"></script>
 </body>
 </html>
 

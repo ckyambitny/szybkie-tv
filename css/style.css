@@ -1,7 +1,7 @@
 html {
     background-color: white;
+    
 }
-
 
 .wrapper {
     width: 1280px;
@@ -10,6 +10,7 @@ html {
     margin: 0 auto;
     text-align: center;
 }
+
 nav {
     position: relative;
     top: 310px;
@@ -23,6 +24,7 @@ nav > ul {
 
 nav > ul > li {
     display: inline-block;
+    margin-right: 10px;
 
 }
 
@@ -32,6 +34,7 @@ a:hover, a:visited, a:active, a:link {
 
 nav > ul > li > a {
     text-decoration: none;
+    margin-right: 10px;
     font-size: 3em;
     background-color: #F7F1AD;
     display: table-cell;
@@ -41,9 +44,26 @@ nav > ul > li > a {
         
 }
 
-
-
 .active {
     border: 10px solid green;
     
 }
+
+h1 {
+    margin: 0;
+}
+
+.horror > ul {
+    padding: 0;
+    margin: 0 auto;
+    text-align: center;
+}
+.horror > ul > li {
+    display: inline-block;
+}
+
+.poster{
+    width: 352px;
+}
+
+
