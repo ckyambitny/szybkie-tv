@@ -1,61 +1,9 @@
 var myApp = angular.module('myApp', ['ngRoute']);
 
 myApp.controller('menuController', function($scope, $location){
-    
-    $scope.menuItems = Array.prototype.slice.call(document.querySelectorAll('nav > ul > li a'), 0);
-       $scope.hashUrls = ['action', 'horror', 'comedy', 'family']
-    $scope.switchRight = function() {
-        console.log('triggers swithc Right from '+ $scope.activeMenuItem);
-        if ( $scope.activeMenuItem === 3 ) {
-            $scope.menuItems[3].classList.remove('active');
-            $scope.menuItems[0].classList.add('active');
-            $scope.activeMenuItem = 0;
-        } else {
-            $scope.menuItems[$scope.activeMenuItem].classList.remove('active');
-            $scope.activeMenuItem += 1;
-            $scope.menuItems[$scope.activeMenuItem].classList.add('active');
-        }    
-    };
-    
-    $scope.switchLeft = function() {
-        console.log('triggers switch Left from' + $scope.activeMenuItem);
-        if ( $scope.activeMenuItem === 0 ) {
-            $scope.menuItems[0].classList.remove('active');
-            $scope.menuItems[3].classList.add('active');
-            $scope.activeMenuItem = 3;
-        } else {
-            $scope.menuItems[$scope.activeMenuItem].classList.remove('active');
-            $scope.activeMenuItem -= 1;
-            $scope.menuItems[$scope.activeMenuItem].classList.add('active');
-        }    
-     };
-    $scope.keyEvent = function(e) {
-        var key = e.keyCode;
-        console.log(key);
-        if( key === 37 || key === 39 ){
-            e.preventDefault();
-            console.log(key);
-            if  ( key === 39 )  {
-                $scope.switchRight();
-            }
-            if( key === 37) {
-                $scope.switchLeft();
-            }
-        } 
-        if( key === 13) {
-            e.stopPropagation();    
-            console.log('enter');
-            $location.path($scope.hashUrls[$scope.activeMenuItem]);
-        }
-    }
-    
-
-//refactoring event handler
-    
-    
-    $scope.activeMenuItem = 3; 
-
-
+    //display options items
+    $scope.activeMenuItem = 0; 
+    $scope.hashUrls = ['action', 'horror', 'comedy', 'family'];
     $scope.itemsToDisplay = [
         {
             name: 'Akcja',
@@ -75,21 +23,33 @@ myApp.controller('menuController', function($scope, $location){
         }
         
     ]; 
-
+    //display key event handling
     $scope.$on('keydown', function(msg, key){
         if( key === 37 || key === 39 ){
             msg.preventDefault();
             console.log(key);
             if  ( key === 39 )  {
                 console.log('go right');
+                if($scope.activeMenuItem === 3){
+                    $scope.activeMenuItem = 0;
+                } else {
+                    $scope.activeMenuItem++;
+                }
+                $scope.$apply();
             }
             if( key === 37) {
                 console.log('go left');
+                if($scope.activeMenuItem === 0){
+                    $scope.activeMenuItem = 3;
+                } else {
+                    $scope.activeMenuItem--;
+                }
+                $scope.$apply();
             }
         } 
         if( key === 13) {
             console.log('enter');
-            $location.path('/horror/kondon');
+            $location.path($scope.hashUrls[$scope.activeMenuItem]);
             $scope.$apply();
         }
     });
