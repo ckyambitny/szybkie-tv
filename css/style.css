@@ -53,12 +53,12 @@ h1 {
     margin: 0;
 }
 
-.horror > ul {
+.choser > ul {
     padding: 0;
     margin: 0 auto;
     text-align: center;
 }
-.horror > ul > li {
+.choser > ul > li {
     display: inline-block;
 }
 

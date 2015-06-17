@@ -7,13 +7,13 @@ myApp.config(function ($routeProvider, $locationProvider){
     })
     .when('/horror',
     {
-        templateUrl: 'partials/horror.html',
+        templateUrl: 'partials/movieChoser.html',
         controller: 'horrorController'
     })
     .when('/horror/kondon',
 
     {
-        templateUrl: 'partials/horror.html',
+        templateUrl: 'partials/movieChoser.html',
         controller: 'horrorController'
     }
     );

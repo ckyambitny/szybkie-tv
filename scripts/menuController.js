@@ -112,7 +112,7 @@ myApp.controller('horrorController', function($scope, $location) {
     ];    
     $scope.activeListItem = 0;  
     $scope.itemsToDisplay = $scope.list.slice(0,3); 
-    
+    $scope.name ='Horrory'; 
     console.log($scope.itemsToDisplay); 
    
     $scope.kk = function(e, b) {
