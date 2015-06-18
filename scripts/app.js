@@ -1,3 +1,4 @@
+'use strict';
 var myApp = angular.module('myApp', ['ngRoute']);
 
 myApp.controller('menuController', function($scope, $location){
@@ -114,34 +115,48 @@ myApp.controller('horrorController', function($scope, $location) {
     // initial display controls 
     $scope.activeListItem = 0;  
     $scope.listControll = 0; 
-    //calculate next 3 posters to display
-    $scope.calculateList = function() {
-        $scope.itemsToDisplay = $scope.list.slice($scope.listControll, $scope.listControll + 3);// +3 cuz slice dsnt return 3rd item, ex. 0-3 = [0,1,2]! 
-
-    };
+    $scope.displayList = [];
     // first display 3(list[0-2]) poster images, TODO: funciton to get 3 next poster images when activeListItem is max(2) 
     // first display
-    $scope.calculateList(); 
-
+    $scope.range = {
+        first:0, 
+        last:3
+    };
+    
+    $scope.dispCalc = function(range) {
+        $scope.displayList = $scope.list.slice(range.first, range.last);
+    };      
+    
+    // initial display
+    $scope.dispCalc($scope.range);
+ 
     $scope.name ='Horrory'; 
     $scope.$on('keydown', function(msg, key){
         if( key === 37 || key === 39 ){
-            console.log(key);
             if  ( key === 39 )  {
-                if ($scope.listControll === 9 ){
-                    $scope.listControll = -1;
-                }
-                console.log('aLI:'+$scope.activeListItem);
-                 if($scope.activeListItem === 2) {
-                    $scope.activeListItem++;
-                    $scope.calculateList();
+                if ($scope.listControll <  2) {
+                    $scope.listControll++;  
                     $scope.$apply();
-                    $scope.activeListItem = -1;
-                } 
-                    $scope.listControll++;
-                    $scope.activeListItem++;
-                    console.log('lC:'+ $scope.listControll);
-                    $scope.$apply(); 
+                    console.log($scope.listControll);
+                } else {
+                
+                    if ($scope.listControll === 9) {
+                       $scope.listControll = 0;
+                       $scope.range.first = 0;
+                       $scope.range.last = 3;
+                       $scope.dispCalc($scope.range);
+                       console.log($scope.listControll);
+                       $scope.$apply();
+ 
+                    } else {     
+                        $scope.listControll++;
+                        $scope.range.first++;
+                        $scope.range.last++;
+                        $scope.dispCalc($scope.range);
+                        console.log($scope.listControll);
+                        $scope.$apply();
+                    }
+                }
             }
         
                     
@@ -169,7 +184,7 @@ myApp.controller('horrorController', function($scope, $location) {
 });
 myApp.directive('keyTrap', function() {
   return function( scope, elem ) {
-    elem.bind('keydown', function (event) {
+    elem.on('keydown', function (event) {
         scope.$broadcast('keydown', event.keyCode );
     });
   };
