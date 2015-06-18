@@ -1,6 +1,6 @@
 <div class="wrapper choser">
         <h1>{{name}}</h1>    
         <ul>
-            <li ng-repeat="item in itemsToDisplay" ng-class="{active: item.navIndex === activeListItem}" ng-keydown="kk($event, $index)" ><div class="poster"><h2>{{item.name}}</h2><img src="{{item.src}}"></div></li>
+            <li ng-repeat="item in itemsToDisplay" ng-class="{active: item.navIndex === listControll}"><div class="poster"><h2>{{item.name}}</h2><img src="{{item.src}}"></div></li>
         </ul>
     </div>

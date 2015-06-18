@@ -58,7 +58,8 @@ myApp.controller('menuController', function($scope, $location){
 
 
 myApp.controller('horrorController', function($scope, $location) {
-       $scope.list = [
+    //it probably should be in a service with other movie poster lists   
+    $scope.list = [
         {
             name: 'dracula',
             src: 'img/dracula.jpg',
@@ -72,7 +73,7 @@ myApp.controller('horrorController', function($scope, $location) {
         {
             name: 'frankenstein' ,
             src:'img/frankenstein.jpg',
-            pnavIndex: 2
+            navIndex: 2
         },
         {
             name: 'friday',
@@ -101,7 +102,7 @@ myApp.controller('horrorController', function($scope, $location) {
         },  
         {
             name: 'shining',
-            src: 'img/shining.jgp',
+            src: 'img/shining.jpg',
             navIndex: 8
         },       
         {
@@ -109,27 +110,53 @@ myApp.controller('horrorController', function($scope, $location) {
             src: 'img/texas.jpg',   
             navIndex: 9
         }   
-    ];    
+    ];   
+    // initial display controls 
     $scope.activeListItem = 0;  
-    $scope.itemsToDisplay = $scope.list.slice(0,3); 
-    $scope.name ='Horrory'; 
-    console.log($scope.itemsToDisplay); 
-   
-    $scope.kk = function(e, b) {
-        console.log(e.keyCode);
-        console.log(b);
+    $scope.listControll = 0; 
+    //calculate next 3 posters to display
+    $scope.calculateList = function() {
+        $scope.itemsToDisplay = $scope.list.slice($scope.listControll, $scope.listControll + 3);// +3 cuz slice dsnt return 3rd item, ex. 0-3 = [0,1,2]! 
+
     };
+    // first display 3(list[0-2]) poster images, TODO: funciton to get 3 next poster images when activeListItem is max(2) 
+    // first display
+    $scope.calculateList(); 
+
+    $scope.name ='Horrory'; 
     $scope.$on('keydown', function(msg, key){
         if( key === 37 || key === 39 ){
-            msg.preventDefault();
             console.log(key);
             if  ( key === 39 )  {
-                console.log('go right');
+                if ($scope.listControll === 9 ){
+                    $scope.listControll = -1;
+                }
+                console.log('aLI:'+$scope.activeListItem);
+                 if($scope.activeListItem === 2) {
+                    $scope.activeListItem++;
+                    $scope.calculateList();
+                    $scope.$apply();
+                    $scope.activeListItem = -1;
+                } 
+                    $scope.listControll++;
+                    $scope.activeListItem++;
+                    console.log('lC:'+ $scope.listControll);
+                    $scope.$apply(); 
             }
+        
+                    
             if( key === 37) {
                 console.log('go left');
+                
+                $scope.listControll--;
+                if( $scope.activeListItem === 0 ){
+                    
+                    $scope.calculateList();
+                } else {
+                    $scope.activeListItem--;   
             }
         } 
+     }
         if( key === 13) {
             console.log('enter');
             $location.path('/horror/kondon');

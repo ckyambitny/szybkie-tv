@@ -10,7 +10,7 @@ myApp.config(function ($routeProvider, $locationProvider){
         templateUrl: 'partials/movieChoser.html',
         controller: 'horrorController'
     })
-    .when('/horror/kondon',
+    .when('/horror/somepage',
 
     {
         templateUrl: 'partials/movieChoser.html',
