@@ -1,5 +1,6 @@
 var myApp = angular.module('myApp', ['ngRoute']);
- myApp.service('MenuService', function() {
+
+myApp.factory('MenuService', function() {
        return {
             hashUrls:  ['action', 'horror', 'comedy', 'family'],
             itemsToDisplay : [
@@ -28,30 +29,8 @@ myApp.controller('menuController', function(MenuService, $scope, $location){
     $scope.activeMenuItem = 0;
     $scope.itemsToDisplay = MenuService['itemsToDisplay'];
     $scope.hashUrls = MenuService['hashUrls'];
-
-
  
-   /* $scope.hashUrls = ['action', 'horror', 'comedy', 'family'];
-    $scope.itemsToDisplay = [
-        {
-            name: 'Akcja',
-            navIndex: 0
-        },
-        {
-            name: 'Horrory',
-            navIndex: 1
-        },
-        {
-            name: 'Komedia',
-            navIndex: 2
-        },
-        {
-            name: 'Familijne',
-            navIndex: 3
-        }
-        
-    ]; */
-    //display key event handling
+      //display key event handling
     $scope.$on('keydown', function(msg, key){
         if( key === 37 || key === 39 ){
             msg.preventDefault();
@@ -83,10 +62,15 @@ myApp.controller('menuController', function(MenuService, $scope, $location){
     });
 
 });
-
+myApp.service('');
 
 myApp.controller('horrorController', function($scope, $location) {
     //it probably should be in a service with other movie poster lists   
+    
+    //service data handling
+
+
+
     $scope.list = [
         {
             name: 'dracula',
@@ -152,6 +136,7 @@ myApp.controller('horrorController', function($scope, $location) {
     
     $scope.dispCalc = function(range) {
         $scope.displayList = $scope.list.slice(range.first, range.last);
+        console.log($scope.displayList.$$hashkey);
     };      
     
     // initial display
@@ -160,7 +145,6 @@ myApp.controller('horrorController', function($scope, $location) {
     $scope.name ='Horrory'; 
     $scope.$on('keydown', function(msg, key){
         if( key === 37 || key === 39 ) {
-            console.log('before lC: '+ $scope.listControll + ' fi : '+$scope.range.first + ' la: '+$scope.range.last);
 
             if( key === 39 )  {
                 if ( $scope.listControll === $scope.displayList[2].navIndex  ){
@@ -197,7 +181,6 @@ myApp.controller('horrorController', function($scope, $location) {
             $scope.listControll--;
             $scope.$apply();
             }
-            console.log('after lC: '+ $scope.listControll + ' fi : '+$scope.range.first + ' la : '+$scope.range.last);
             
         }    
         if( key === 13) {
