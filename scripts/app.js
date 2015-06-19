@@ -133,10 +133,60 @@ myApp.controller('horrorController', function($scope, $location) {
     $scope.name ='Horrory'; 
     $scope.$on('keydown', function(msg, key){
         if( key === 37 || key === 39 ) {
-            console.log('before li: '+ $scope.listControll + ' fi : '+$scope.range.first + ' la: '+$scope.range.last);
+            console.log('before lC: '+ $scope.listControll + ' fi : '+$scope.range.first + ' la: '+$scope.range.last);
+
+            if( key === 39 )  {
+                if ( $scope.listControll === $scope.displayList[2].navIndex  ){
+                    $scope.range.first++;
+                    $scope.range.last++;
+                    $scope.dispCalc($scope.range);
+                }
+                //support for different size of film table, i really should implement request for that(learn more FFS),
+                if( $scope.listControll === $scope.list[$scope.list.length-1].navIndex){
+                    //dont know how to  implement default parameters on start, just type it then
+                    $scope.range = {
+                        first: 0, 
+                        last: 3
+                    };
+                    $scope.listControll = -1;//-1 because standard incrementation
+                    $scope.dispCalc($scope.range);
+                }
+                $scope.listControll++;
+                $scope.$apply();    
+            }
+            if( key === 37) {
+                if( $scope.listControll === 0 ){
+                    $scope.listControll = $scope.list[$scope.list.length-1].navIndex + 1; //+1 because standard decrementation
+                    $scope.range.last = $scope.list.length ;
+                    $scope.range.first = $scope.range.last - 3; 
+                    $scope.dispCalc($scope.range);
+                    $scope.$apply();
+                }    
+                if( $scope.listControll === $scope.displayList[0].navIndex ){
+                    $scope.range.first--;
+                    $scope.range.last--;
+                    $scope.dispCalc($scope.range);
+                } 
+            $scope.listControll--;
+            $scope.$apply();
+            }
+            console.log('after lC: '+ $scope.listControll + ' fi : '+$scope.range.first + ' la : '+$scope.range.last);
+            
+        }    
+        if( key === 13) {
+            console.log('enter');
+            $location.path('/horror/'+$scope.list[$scope.listControll].name );
+            $scope.$apply();
+        }
+    });
+
+/*
+    $scope.$on('keydown', function(msg, key){
+        if( key === 37 || key === 39 ) {
+            console.log('before lC: '+ $scope.listControll + ' fi : '+$scope.range.first + ' la: '+$scope.range.last);
             
             if  ( key === 39 )  {
-                if ($scope.listControll <  2 ) {
+                if ($scope.listControll <  2 || ($scope.listControll > 6 && $scope.listControll < 9) ) {
                     $scope.listControll++;  
                     $scope.$apply();
                 } else {
@@ -168,6 +218,7 @@ myApp.controller('horrorController', function($scope, $location) {
                         $scope.listControll = 9;
                         $scope.dispCalc($scope.range);
                         $scope.$apply();
+                        
                     } else {
                         $scope.listControll--; 
                         $scope.$apply();
@@ -182,7 +233,7 @@ myApp.controller('horrorController', function($scope, $location) {
                 } 
                     
             }
-            console.log('after li: '+ $scope.listControll + ' fi : '+$scope.range.first + ' la : '+$scope.range.last);
+            console.log('after lC: '+ $scope.listControll + ' fi : '+$scope.range.first + ' la : '+$scope.range.last);
         } 
         if( key === 13) {
             console.log('enter');
@@ -191,7 +242,7 @@ myApp.controller('horrorController', function($scope, $location) {
         }
     });
 
-  
+ */ 
  
 });
 myApp.directive('keyTrap', function() {
