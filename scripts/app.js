@@ -180,69 +180,6 @@ myApp.controller('horrorController', function($scope, $location) {
         }
     });
 
-/*
-    $scope.$on('keydown', function(msg, key){
-        if( key === 37 || key === 39 ) {
-            console.log('before lC: '+ $scope.listControll + ' fi : '+$scope.range.first + ' la: '+$scope.range.last);
-            
-            if  ( key === 39 )  {
-                if ($scope.listControll <  2 || ($scope.listControll > 6 && $scope.listControll < 9) ) {
-                    $scope.listControll++;  
-                    $scope.$apply();
-                } else {
-                
-                    if ($scope.listControll === 9) {
-                       $scope.listControll = 0;
-                       $scope.range.first = 0;
-                       $scope.range.last = 3;
-                       $scope.dispCalc($scope.range);
-                       $scope.$apply();
- 
-                    } else {     
-                        $scope.listControll++;
-                        $scope.range.first++;
-                        $scope.range.last++;
-                        $scope.dispCalc($scope.range);
-                        $scope.$apply();
-                    }
-                }
-            }
-        
-                    
-            if( key === 37) {
-                if ( $scope.listControll <= 2 || $scope.listControll >7) {
-                    
-                    if ( $scope.listControll === 0 ){
-                        $scope.range.last = 10;  
-                        $scope.range.first = 7;
-                        $scope.listControll = 9;
-                        $scope.dispCalc($scope.range);
-                        $scope.$apply();
-                        
-                    } else {
-                        $scope.listControll--; 
-                        $scope.$apply();
-                    }
-                    
-                } else {
-                    $scope.range.last--;  
-                    $scope.range.first--;
-                    $scope.listControll--;
-                    $scope.dispCalc($scope.range);
-                    $scope.$apply();
-                } 
-                    
-            }
-            console.log('after lC: '+ $scope.listControll + ' fi : '+$scope.range.first + ' la : '+$scope.range.last);
-        } 
-        if( key === 13) {
-            console.log('enter');
-            $location.path('/horror/'+$scope.list[$scope.listControll].name );
-            $scope.$apply();
-        }
-    });
-
- */ 
  
 });
 myApp.directive('keyTrap', function() {
