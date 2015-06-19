@@ -1,10 +1,37 @@
-'use strict';
 var myApp = angular.module('myApp', ['ngRoute']);
+ myApp.service('MenuService', function() {
+       return {
+            hashUrls:  ['action', 'horror', 'comedy', 'family'],
+            itemsToDisplay : [
+        {
+            name: 'Akcja',
+            navIndex: 0
+        },
+        {
+            name: 'Horrory',
+            navIndex: 1
+        },
+        {
+            name: 'Komedia',
+            navIndex: 2
+        },
+        {
+            name: 'Familijne',
+            navIndex: 3
+        }]
+        } ;
 
-myApp.controller('menuController', function($scope, $location){
+    });
+
+myApp.controller('menuController', function(MenuService, $scope, $location){
     //display options items
-    $scope.activeMenuItem = 0; 
-    $scope.hashUrls = ['action', 'horror', 'comedy', 'family'];
+    $scope.activeMenuItem = 0;
+    $scope.itemsToDisplay = MenuService['itemsToDisplay'];
+    $scope.hashUrls = MenuService['hashUrls'];
+
+
+ 
+   /* $scope.hashUrls = ['action', 'horror', 'comedy', 'family'];
     $scope.itemsToDisplay = [
         {
             name: 'Akcja',
@@ -23,7 +50,7 @@ myApp.controller('menuController', function($scope, $location){
             navIndex: 3
         }
         
-    ]; 
+    ]; */
     //display key event handling
     $scope.$on('keydown', function(msg, key){
         if( key === 37 || key === 39 ){
@@ -179,8 +206,7 @@ myApp.controller('horrorController', function($scope, $location) {
             $scope.$apply();
         }
     });
-
- 
+    
 });
 myApp.directive('keyTrap', function() {
   return function( scope, elem ) {
