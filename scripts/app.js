@@ -34,9 +34,7 @@ myApp.controller('menuController', function(MenuService, $scope, $location){
     $scope.$on('keydown', function(msg, key){
         if( key === 37 || key === 39 ){
             msg.preventDefault();
-            console.log(key);
             if  ( key === 39 )  {
-                console.log('go right');
                 if($scope.activeMenuItem === 3){
                     $scope.activeMenuItem = 0;
                 } else {
@@ -45,7 +43,6 @@ myApp.controller('menuController', function(MenuService, $scope, $location){
                 $scope.$apply();
             }
             if( key === 37) {
-                console.log('go left');
                 if($scope.activeMenuItem === 0){
                     $scope.activeMenuItem = 3;
                 } else {
@@ -56,22 +53,17 @@ myApp.controller('menuController', function(MenuService, $scope, $location){
         } 
         if( key === 13) {
             console.log('enter');
-            $location.path($scope.hashUrls[$scope.activeMenuItem]);
+            $location.path('MovieType/' + $scope.hashUrls[$scope.activeMenuItem]);
             $scope.$apply();
         }
     });
 
 });
-myApp.service('');
-
-myApp.controller('horrorController', function($scope, $location) {
-    //it probably should be in a service with other movie poster lists   
     
-    //service data handling
-
-
-
-    $scope.list = [
+myApp.factory('MovieProvider', function($routeParams){
+    //data hardcoded just for horrors test    
+  
+    var horrorData = [
         {
             name: 'dracula',
             src: 'img/dracula.jpg',
@@ -122,12 +114,34 @@ myApp.controller('horrorController', function($scope, $location) {
             src: 'img/texas.jpg',   
             navIndex: 9
         }   
-    ];   
+    ];
+    console.log('factory invoked with movie type: '+ $routeParams.movieType);
+    var ret = {};
+    ret.getData = function() { 
+        switch($routeParams.movieType){
+            case 'horror':
+                return horrorData;   
+            break;
+            case 'action':
+                return [];
+            break;
+        }
+    }
+    
+    return ret;
+
+});
+
+myApp.controller('ChoserController', function(MovieProvider, $scope, $location, $routeParams) {
+    
+    //service data handling
+
+   $scope.list = MovieProvider.getData() || [];   
     // initial display controls 
     $scope.activeListItem = 0;  
     $scope.listControll = 0; 
     $scope.displayList = [];
-    // first display 3(list[0-2]) poster images, TODO: funciton to get 3 next poster images when activeListItem is max(2) 
+    // first display 3(list[0-2]) poster images
     // first display
     $scope.range = {
         first:0, 
@@ -136,13 +150,12 @@ myApp.controller('horrorController', function($scope, $location) {
     
     $scope.dispCalc = function(range) {
         $scope.displayList = $scope.list.slice(range.first, range.last);
-        console.log($scope.displayList.$$hashkey);
     };      
     
     // initial display
     $scope.dispCalc($scope.range);
- 
-    $scope.name ='Horrory'; 
+//change $scope.name depending on route, 
+    $scope.name =$routeParams.movieType; 
     $scope.$on('keydown', function(msg, key){
         if( key === 37 || key === 39 ) {
 
