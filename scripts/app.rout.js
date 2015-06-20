@@ -3,7 +3,7 @@ myApp.config(function ($routeProvider, $locationProvider){
         .when('/',
         {
             templateUrl: 'partials/menu.html',
-            controller: 'menuController'
+            controller: 'MenuController'
         })
         .when('/MovieType/:movieType',
         {

@@ -24,7 +24,7 @@ myApp.factory('MenuService', function() {
 
     });
 
-myApp.controller('menuController', function(MenuService, $scope, $location){
+myApp.controller('MenuController', function(MenuService, $scope, $timeout, $location){
     //display options items
     $scope.activeMenuItem = 0;
     $scope.itemsToDisplay = MenuService['itemsToDisplay'];
@@ -32,30 +32,29 @@ myApp.controller('menuController', function(MenuService, $scope, $location){
  
       //display key event handling
     $scope.$on('keydown', function(msg, key){
-        if( key === 37 || key === 39 ){
-            msg.preventDefault();
-            if  ( key === 39 )  {
-                if($scope.activeMenuItem === 3){
-                    $scope.activeMenuItem = 0;
-                } else {
-                    $scope.activeMenuItem++;
+    //timeout for executin in next digest,  in the same digest as $broadcast it's causing errors, 
+        $timeout( function() {    
+            if( key === 37 || key === 39 ){
+                msg.preventDefault();
+                if  ( key === 39 )  {
+                    if($scope.activeMenuItem === 3){
+                        $scope.activeMenuItem = 0;
+                    } else {
+                        $scope.activeMenuItem++;
+                    }
                 }
-                $scope.$apply();
-            }
-            if( key === 37) {
-                if($scope.activeMenuItem === 0){
-                    $scope.activeMenuItem = 3;
-                } else {
-                    $scope.activeMenuItem--;
+                if( key === 37) {
+                    if($scope.activeMenuItem === 0){
+                        $scope.activeMenuItem = 3;
+                    } else {
+                        $scope.activeMenuItem--;
+                    }
                 }
-                $scope.$apply();
+            } 
+            if( key === 13) {
+                $location.path('MovieType/' + $scope.hashUrls[$scope.activeMenuItem]);
             }
-        } 
-        if( key === 13) {
-            console.log('enter');
-            $location.path('MovieType/' + $scope.hashUrls[$scope.activeMenuItem]);
-            $scope.$apply();
-        }
+        }, 0);
     });
 
 });
@@ -115,16 +114,13 @@ myApp.factory('MovieProvider', function($routeParams){
             navIndex: 9
         }   
     ];
-    console.log('factory invoked with movie type: '+ $routeParams.movieType);
     var ret = {};
     ret.getData = function() { 
         switch($routeParams.movieType){
             case 'horror':
                 return horrorData;   
-            break;
             case 'action':
                 return [];
-            break;
         }
     }
     
@@ -132,8 +128,7 @@ myApp.factory('MovieProvider', function($routeParams){
 
 });
 
-myApp.controller('ChoserController', function(MovieProvider, $scope, $location, $routeParams) {
-    
+myApp.controller('ChoserController', function(MovieProvider, $scope, $location, $timeout, $routeParams) {
     //service data handling
 
    $scope.list = MovieProvider.getData() || [];   
@@ -141,7 +136,6 @@ myApp.controller('ChoserController', function(MovieProvider, $scope, $location, 
     $scope.activeListItem = 0;  
     $scope.listControll = 0; 
     $scope.displayList = [];
-    // first display 3(list[0-2]) poster images
     // first display
     $scope.range = {
         first:0, 
@@ -152,62 +146,57 @@ myApp.controller('ChoserController', function(MovieProvider, $scope, $location, 
         $scope.displayList = $scope.list.slice(range.first, range.last);
     };      
     
-    // initial display
+        // initial display
     $scope.dispCalc($scope.range);
-//change $scope.name depending on route, 
+        //change $scope.name depending on route, 
     $scope.name =$routeParams.movieType; 
     $scope.$on('keydown', function(msg, key){
-        if( key === 37 || key === 39 ) {
-
-            if( key === 39 )  {
-                if ( $scope.listControll === $scope.displayList[2].navIndex  ){
-                    $scope.range.first++;
-                    $scope.range.last++;
-                    $scope.dispCalc($scope.range);
+        //timeout 0 to prevent digest error(broadcast)
+        $timeout( function() {
+            if( key === 37 || key === 39 ) {
+                if( key === 39 )  {
+                    if ( $scope.listControll === $scope.displayList[2].navIndex  ){
+                        $scope.range.first++;
+                        $scope.range.last++;
+                        $scope.dispCalc($scope.range);
+                    }
+                        //support for different size of film table, i really should implement request for movie data
+                    if( $scope.listControll === $scope.list[$scope.list.length-1].navIndex){
+                        $scope.range = {
+                            first: 0, 
+                            last: 3
+                        };
+                        $scope.listControll = -1;//-1 because standard incrementation
+                        $scope.dispCalc($scope.range);
+                    }
+                    $scope.listControll++;
                 }
-                //support for different size of film table, i really should implement request for that(learn more FFS),
-                if( $scope.listControll === $scope.list[$scope.list.length-1].navIndex){
-                    //dont know how to  implement default parameters on start, just type it then
-                    $scope.range = {
-                        first: 0, 
-                        last: 3
-                    };
-                    $scope.listControll = -1;//-1 because standard incrementation
-                    $scope.dispCalc($scope.range);
+                if( key === 37) {
+                    if( $scope.listControll === 0 ){
+                        $scope.listControll = $scope.list[$scope.list.length-1].navIndex + 1; //+1 because standard decrementation
+                        $scope.range.last = $scope.list.length;
+                        $scope.range.first = $scope.range.last - 3; 
+                        $scope.dispCalc($scope.range);
+                    }    
+                    if( $scope.listControll === $scope.displayList[0].navIndex ){
+                        $scope.range.first--;
+                        $scope.range.last--;
+                        $scope.dispCalc($scope.range);
+                    } 
+                $scope.listControll--;
                 }
-                $scope.listControll++;
-                $scope.$apply();    
+                
+            }    
+            if( key === 13) {
+                $location.path('/horror/'+$scope.list[$scope.listControll].name );
             }
-            if( key === 37) {
-                if( $scope.listControll === 0 ){
-                    $scope.listControll = $scope.list[$scope.list.length-1].navIndex + 1; //+1 because standard decrementation
-                    $scope.range.last = $scope.list.length ;
-                    $scope.range.first = $scope.range.last - 3; 
-                    $scope.dispCalc($scope.range);
-                    $scope.$apply();
-                }    
-                if( $scope.listControll === $scope.displayList[0].navIndex ){
-                    $scope.range.first--;
-                    $scope.range.last--;
-                    $scope.dispCalc($scope.range);
-                } 
-            $scope.listControll--;
-            $scope.$apply();
-            }
-            
-        }    
-        if( key === 13) {
-            console.log('enter');
-            $location.path('/horror/'+$scope.list[$scope.listControll].name );
-            $scope.$apply();
-        }
+        }, 0);
     });
-    
 });
 myApp.directive('keyTrap', function() {
-  return function( scope, elem ) {
+  return function( $scope, elem ) {
     elem.on('keydown', function (event) {
-        scope.$broadcast('keydown', event.keyCode );
+        $scope.$broadcast('keydown', event.keyCode );
     });
   };
 });
